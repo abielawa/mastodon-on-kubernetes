@@ -1,0 +1,89 @@
+# Default values for the Helm Chart are from: https://github.com/mastodon/mastodon/blob/v4.0.2/chart/values.yaml
+
+replicaCount: 2
+
+image:
+  tag: "v4.0.2"
+  pullPolicy: IfNotPresent
+
+mastodon:
+  createAdmin:
+    enabled: true
+    username: admin
+    email: example@email.pl
+  local_domain: example.com
+  s3:
+    enabled: true
+    existingSecret: "mastodon-server-secret"
+    bucket: "your-bucket-name"
+    endpoint: https://storage.googleapis.com
+    hostname: storage.googleapis.com
+    region: "EU"
+  secrets:
+    existingSecret: "mastodon-server-secret"
+  smtp:
+    auth_method: plain
+    ca_file: /etc/ssl/certs/ca-certificates.crt
+    delivery_method: smtp
+    domain: 
+    enable_starttls: "auto"
+    from_address: example@email.pl
+    openssl_verify_mode: peer
+    port: 587
+    reply_to: example@email.pl
+    server: 
+    tls: true
+    login: example@email.pl
+    existingSecret: mastodon-server-secret
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+    nginx.org/client-max-body-size: 40m
+  ingressClassName:
+  hosts:
+    - host: example.com
+      paths:
+        - path: "/"
+  tls:
+    - secretName: mastodon-tls
+      hosts:
+        - example.com
+
+elasticsearch:
+  master:
+    masterOnly: false
+    replicaCount: 1
+  data:
+    replicaCount: 0
+  coordinating:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
+
+postgresql:
+  enabled: false
+  postgresqlHostname: your-psql
+  postgresqlPort: 5432
+  auth:
+    database: mastodon
+    username: mastodon
+    existingSecret: "mastodon-postgres-secret"
+redis:
+  architecture: "standalone"
+  auth:
+    existingSecret: "mastodon-server-secret"
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
