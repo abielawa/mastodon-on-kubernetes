@@ -1,8 +1,9 @@
 # mastodon-on-kubernetes
 Collection of code to run [Mastodon](https://github.com/mastodon/mastodon) server on [Kubernetes](https://kubernetes.io/) with [Flux CD](https://fluxcd.io/) & [Terraform](https://www.terraform.io/).
 
-## Prerequisites
+See the whole configuration with instructions in the [article on SoftwareMill's blog](https://softwaremill.com/running-mastodon-server-on-kubernetes/).
 
+## Prerequisites
 
 ## Structure
 The structure is based on [Flux monorepo](https://fluxcd.io/flux/guides/repository-structure/#monorepo) approach:
